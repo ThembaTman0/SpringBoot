@@ -34,11 +34,19 @@ public class Main {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
     }
-
+//Get all customers
 //    @RequestMapping(path = "api/v1/customer", method = RequestMethod.GET)
     @GetMapping("api/v1/customers")
     public List<Customer> getCustomers(){
         return customers;
+    }
+
+    //search customer
+    @GetMapping("api/v1/customers/{CustomerId}")
+    public Customer getCustomer(@PathVariable("CustomerId") Integer customerId){
+        //check is we get customer with the provided ID
+       Customer customer= customers.stream().filter(c -> c.id.equals(customerId)).findFirst().orElseThrow(()->new IllegalArgumentException("Customer with id [%s] not found".formatted(customerId)));
+       return customer;
     }
 
     static class Customer{
